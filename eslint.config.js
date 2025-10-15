@@ -1,3 +1,7 @@
+//  * Copyright (c) 2025 XUNOIA TECHNOLOGIES PRIVATE LIMITED
+//  * Licensed under XUNOIA Private License v1.0
+//  * All rights reserved.
+ 
 import js from '@eslint/js';
 import globals from 'globals';
 import react from 'eslint-plugin-react';
