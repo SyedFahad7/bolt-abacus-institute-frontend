@@ -197,6 +197,9 @@ git push origin feature/your-feature
 Submit a Pull Request 🚀
 
 🪪 License
-MIT License
+XUNOIA TECHNOLOGIES PRIVATE LIMITED
+CIN: U58201TS2025PTC194742
+
+XUNOIA PRIVATE LICENSE v1.0
 © 2025 Xunoia – Built and maintained by Mohd Mujahed
 
