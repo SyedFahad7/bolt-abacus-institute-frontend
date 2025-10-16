@@ -96,6 +96,19 @@ This project enforces code standards through:
 If any check fails, the commit/push is blocked until fixed ✅
 
 ---
+### 🧩 Example Branch Naming Conventions
+main
+└── develop
+    ├── feature/student-dashboard-ui
+    ├── feature/student-api-integration
+    ├── bugfix/navbar-scroll
+    └── release/v1.0.0
+
+🔹 Use kebab-case (lowercase-with-dashes).
+🔹 Keep names short but descriptive.
+🔹 Always branch from the correct base branch (develop or main).
+🔹 Avoid working directly on main or develop.
+
 
 ## 🎨 Styling with TailwindCSS
 
