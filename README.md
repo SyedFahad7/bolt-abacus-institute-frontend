@@ -24,7 +24,7 @@ A **production-grade React + TypeScript frontend** built with **Vite**, **Tailwi
 ---
 
 ## 🧭 Folder Structure
-
+```
 bolt-abacus-client/
 ├── src/
 │ ├── api/ # Axios/fetch services
@@ -50,9 +50,8 @@ bolt-abacus-client/
 ├── package.json
 └── README.md
 
-yaml
-Copy code
 
+```
 ---
 
 ## ⚙️ Scripts
@@ -146,8 +145,7 @@ export default {
 }
 Usage Example:
 
-tsx
-Copy code
+
 <h1 className="text-3xl font-bold text-brand-primary">
   Welcome to Bolt Abacus ⚡️
 </h1>
@@ -156,8 +154,7 @@ Testing uses Vitest + React Testing Library.
 
 Example: src/components/Button.test.tsx
 
-tsx
-Copy code
+
 import { render, screen } from '@testing-library/react'
 import Button from './Button'
 
@@ -167,14 +164,12 @@ test('renders label', () => {
 })
 Run tests:
 
-bash
-Copy code
+
 npm run test
 🧰 Continuous Integration (CI)
 For CI/CD pipelines (e.g., GitHub Actions):
 
-yaml
-Copy code
+
 name: CI
 on: [push, pull_request]
 jobs:
@@ -203,18 +198,15 @@ Fork the repository
 
 Create your feature branch
 
-bash
-Copy code
+
 git checkout -b feature/your-feature
 Make changes and test
 
-bash
-Copy code
+
 npm run lint && npm run test
 Commit and push
 
-bash
-Copy code
+
 git commit -m "feat: add new feature"
 git push origin feature/your-feature
 Submit a Pull Request 🚀
