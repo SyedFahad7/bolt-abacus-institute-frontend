@@ -1,4 +1,4 @@
-# ⚡️ Bolt Abacus Client
+# ⚡️ Bolt Abacus Student Frontend
 
 **Version:** 1.0.0  
 **Maintainer:** [Mohd Mujahed](mailto:dev.xunoia@gmail.com)  
