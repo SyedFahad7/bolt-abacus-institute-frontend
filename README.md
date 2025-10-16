@@ -97,12 +97,22 @@ If any check fails, the commit/push is blocked until fixed ✅
 
 ---
 ### 🧩 Example Branch Naming Conventions
-main
-└── develop
-    ├── feature/student-dashboard-ui
-    ├── feature/student-api-integration
-    ├── bugfix/navbar-scroll
-    └── release/v1.0.0
+
+
+| Branch Name | Purpose | 
+|------|----------| 
+| main | Production-ready code only. Always stable, fully tested, and deployed to production. | 
+| develop | Active development branch where all features are integrated and tested before merging into main.|  
+| feature/* | Used for new features, UI components, or functionality. Branched from develop. |  
+| bugfix/* | Used for fixing bugs found during development (before release). Branched from develop. |  
+| hotfix/* | Used for urgent fixes in production. Branched directly from main. |  
+| release/* | Used to prepare a release — final testing, version bump, and minor polish before merging into main. |  
+
+
+If any check fails, the commit/push is blocked until fixed ✅
+
+---
+
 
 🔹 Use kebab-case (lowercase-with-dashes).
 🔹 Keep names short but descriptive.
