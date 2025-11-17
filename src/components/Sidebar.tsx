@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
+import logoImg from '../assets/images/logo.png'
 import {
   ChartBar,
   Users,
-  Buildings,
+  // Buildings (institutes nav) removed
   ChalkboardTeacher,
   Books,
   Globe,
@@ -19,9 +20,9 @@ const Sidebar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const dummyUser = {
-    initials: 'AD',
-    firstName: 'Admin',
-    lastName: 'User',
+    initials: 'NI',
+    firstName: 'NorthSide',
+    lastName: 'Institute',
   };
 
   type NavItem = {
@@ -31,17 +32,17 @@ const Sidebar: React.FC = () => {
   };
 
   const navigationItems: NavItem[] = [
-    { name: 'Dashboard', href: '/admin/dashboard', icon: <ChartBar size={24} weight="fill" /> },
-    { name: 'Students', href: '/admin/students', icon: <Users size={24} /> },
-    { name: 'Institute', href: '/admin/institutes', icon: <Buildings size={24} /> },
-    { name: 'Teachers', href: '/admin/teachers', icon: <ChalkboardTeacher size={24} /> },
-    { name: 'Batches', href: '/admin/batches', icon: <Books size={24} /> },
-    { name: 'Realms', href: '/admin/realms', icon: <Globe size={24} /> },
+  { name: 'Dashboard', href: '/institute/dashboard', icon: <ChartBar size={24} weight="fill" /> },
+  { name: 'Students', href: '/institute/students', icon: <Users size={24} /> },
+  // Institutes management removed for institute frontend
+  { name: 'Teachers', href: '/institute/teachers', icon: <ChalkboardTeacher size={24} /> },
+  { name: 'Batches', href: '/institute/batches', icon: <Books size={24} /> },
+  { name: 'Realms', href: '/institute/realms', icon: <Globe size={24} /> },
   ];
 
   const footerItems: NavItem[] = [
-    { name: 'Settings', href: '/admin/settings', icon: <Gear size={24} /> },
-    { name: 'Logout', href: '/admin/logout', icon: <SignOut size={24} /> },
+  { name: 'Settings', href: '/institute/settings', icon: <Gear size={24} /> },
+  { name: 'Logout', href: '/institute/logout', icon: <SignOut size={24} /> },
   ];
 
   // Check if current route matches nav item
@@ -95,13 +96,13 @@ const Sidebar: React.FC = () => {
         {/* Header with Logo */}
         <div className="flex items-center justify-between p-2 border-b border-[#212124] flex-shrink-0">
           {!isCollapsed ? (
-            <div className="flex items-center space-x-2">
               <div className="flex items-center space-x-2">
-                <a href="/">
-                  <img src="../src/assets/images/logo.png" alt="BoltAbacus logo" className="w-3/4 cursor-pointer" />
-                </a>
+                <div className="flex items-center space-x-2">
+                  <Link to="/">
+                    <img src={logoImg} alt="BoltAbacus logo" className="w-3/4 cursor-pointer" />
+                  </Link>
+                </div>
               </div>
-            </div>
           ) : (
             <div className="flex items-center justify-center w-full">
               {/* <div className="flex items-center space-x-2">
@@ -131,7 +132,7 @@ const Sidebar: React.FC = () => {
                   <p className="font-medium text-sm group-hover:text-[#000000]">
                     {dummyUser.firstName} {dummyUser.lastName}
                   </p>
-                  <p className="text-xs text-white group-hover:text-[#000000]">Administrator</p>
+                  <p className="text-xs text-white group-hover:text-[#000000]">Abacus Institute</p>
                 </div>
               </a>
               <button className="p-1.5 rounded-md hover:bg-[#e6b422] transition-all duration-200" title="Logout">
@@ -205,7 +206,7 @@ const Sidebar: React.FC = () => {
             <div className="w-8 h-8 bg-[#facb25] rounded-lg flex items-center justify-center">
               <span className="text-[#000000] font-bold text-sm">BA</span>
             </div>
-            <span className="font-bold text-lg text-white">Admin Panel</span>
+            <span className="font-bold text-lg text-white">Institute Panel</span>
           </div>
           <button onClick={closeMobileMenu} className="p-2 rounded-lg transition-all duration-200 hover:bg-[#facb25] hover:text-[#000000]">
             <X size={18} />
@@ -223,7 +224,7 @@ const Sidebar: React.FC = () => {
                 <p className="font-medium text-sm group-hover:text-[#000000]">
                   {dummyUser.firstName} {dummyUser.lastName}
                 </p>
-                <p className="text-xs text-white group-hover:text-[#000000]">Administrator</p>
+                <p className="text-xs text-white group-hover:text-[#000000]">Abacus Institute</p>
               </div>
             </a>
             <button className="p-1.5 rounded-md hover:bg-[#e6b422] transition-all duration-200" title="Logout">

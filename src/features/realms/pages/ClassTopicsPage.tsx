@@ -30,7 +30,7 @@ const ClassTopicsPage: React.FC = () => {
   }
 
   const handleViewQuestions = (topicId: number, type: 'classwork' | 'homework') => {
-    navigate(`/admin/realms/${scope}/${realmSlug}/${classSlug}/${topicSlugFromId(topicId)}/${type}`)
+  navigate(`/institute/realms/${scope}/${realmSlug}/${classSlug}/${topicSlugFromId(topicId)}/${type}`)
   }
 
   if (!realm || !cls) {
@@ -48,7 +48,7 @@ const ClassTopicsPage: React.FC = () => {
   return (
     <div className="w-full">
       <div className="flex items-center gap-4 mb-4">
-        <Button variant="secondary" onClick={() => navigate(`/admin/realms/${scope}/${realmSlug}`)}>
+  <Button variant="secondary" onClick={() => navigate(`/institute/realms/${scope}/${realmSlug}`)}>
           <ArrowLeft size={16} />
         </Button>
         <div>

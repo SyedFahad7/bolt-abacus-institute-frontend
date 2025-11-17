@@ -10,8 +10,11 @@ import type { ComponentType } from 'react';
 const AdminDashboardPage = lazy(() => import('../features/dashboard/page'));
 const AdminStudentsPage = lazy(() => import('../features/students/page'));
 const AdminStudentActionsPage = lazy(() => import('../features/students/pages/ActionPage'));
-const AdminInstitutesPage = lazy(() => import('../features/institutes/page'));
-const AdminInstituteDetailsPage = lazy(() => import('../features/institutes/pages/DetailsPage'));
+const InstituteAttendanceList = lazy(() => import('../features/students/pages/AttendanceList'));
+const InstituteAttendanceMark = lazy(() => import('../features/students/pages/AttendanceMark'));
+const AdminAttendanceOverviewPage = lazy(() => import('../features/students/pages/AttendanceOverview'));
+const AdminBatchAttendancePage = lazy(() => import('../features/students/pages/BatchAttendance'));
+// Institutes management removed for institute-level frontend: Institutes CRUD is admin-only
 const AdminTeachersPage = lazy(() => import('../features/teachers/page'));
 const AdminTeacherDetailsPage = lazy(() => import('../features/teachers/pages/DetailsPage'));
 const AdminBatchesPage = lazy(() => import('../features/batches/page'));
@@ -30,113 +33,125 @@ export interface RouteConfig {
 
 export const routes: RouteConfig[] = [
   {
-    path: '/admin/dashboard',
+    path: '/institute/dashboard',
     element: AdminDashboardPage,
     protected: true,
-    title: 'Admin Dashboard',
+    title: 'Institute Name (Abacus Institute) Dashboard',
   },
   {
-    path: '/admin/students',
+    path: '/institute/students',
     element: AdminStudentsPage,
     protected: true,
     title: 'Students Management',
   },
   {
-    path: '/admin/students/:studentId/actions',
+    path: '/institute/students/attendance',
+    element: InstituteAttendanceList,
+    protected: true,
+    title: 'Mark Attendance',
+  },
+  {
+    path: '/institute/students/attendance/:batchId',
+    element: InstituteAttendanceMark,
+    protected: true,
+    title: 'Mark Batch Attendance',
+  },
+  {
+    path: '/institute/students/attendance',
+    element: AdminAttendanceOverviewPage,
+    protected: true,
+    title: 'Attendance Overview',
+  },
+  {
+    path: '/institute/students/attendance/:batchId',
+    element: AdminBatchAttendancePage,
+    protected: true,
+    title: 'Batch Attendance',
+  },
+  {
+    path: '/institute/students/:studentId/actions',
     element: AdminStudentActionsPage,
     protected: true,
     title: 'Student Actions',
   },
   {
-    path: '/admin/institutes',
-    element: AdminInstitutesPage,
-    protected: true,
-    title: 'Institutes Management',
-  },
-  {
-    path: '/admin/institutes/:instituteId',
-    element: AdminInstituteDetailsPage,
-    protected: true,
-    title: 'Institute Details',
-  },
-  {
-    path: '/admin/teachers',
+    path: '/institute/teachers',
     element: AdminTeachersPage,
     protected: true,
     title: 'Teachers Management',
   },
   {
-    path: '/admin/teachers/:teacherId',
+    path: '/institute/teachers/:teacherId',
     element: AdminTeacherDetailsPage,
     protected: true,
     title: 'Teacher Details',
   },
   {
-    path: '/admin/batches',
+    path: '/institute/batches',
     element: AdminBatchesPage,
     protected: true,
     title: 'Batches Management',
   },
   {
-    path: '/admin/batches/:batchId',
+    path: '/institute/batches/:batchId',
     element: AdminBatchDetailsPage,
     protected: true,
     title: 'Batch Details',
   },
   {
-    path: '/admin/realms',
+    path: '/institute/realms',
     element: AdminRealmsPage,
     protected: true,
     title: 'Realms Management',
   },
   {
-    path: '/admin/realms/:scope/:realmSlug',
+    path: '/institute/realms/:scope/:realmSlug',
     element: AdminRealmClassesPage,
     protected: true,
     title: 'Realm Classes',
   },
   {
-    path: '/admin/realms/:scope/:realmSlug/:classSlug',
+    path: '/institute/realms/:scope/:realmSlug/:classSlug',
     element: AdminClassTopicsPage,
     protected: true,
     title: 'Class Topics',
   },
   {
-    path: '/admin/realms/:scope/:realmSlug/:classSlug/:topicSlug/:quizType',
+    path: '/institute/realms/:scope/:realmSlug/:classSlug/:topicSlug/:quizType',
     element: AdminQuestionsPage,
     protected: true,
     title: 'Questions',
   },
   // {
-  //   path: '/admin/students',
+  //   path: '/institute/students',
   //   element: AdminStudentsPage,
   //   protected: true,
   //   title: 'Students Management',
   // },
   // {
-  //   path: '/admin/institute',
+  //   path: '/institute/institute',
   //   element: AdminInstitutePage,
   //   protected: true,
   //   title: 'Institute Management',
   // },
   // {
-  //   path: '/admin/teachers',
+  //   path: '/institute/teachers',
   //   element: AdminTeachersPage,
   //   protected: true,
   //   title: 'Teachers Management',
   // },
   // {
-  //   path: '/admin/batches',
+  //   path: '/institute/batches',
   //   element: AdminBatchesPage,
   //   protected: true,
   //   title: 'Batches Management',
   // },
   // {
-  //   path: '/admin/realms',
+  //   path: '/institute/realms',
   //   element: AdminRealmsPage,
   //   protected: true,
   //   title: 'Realms Management',
   // },
 ];
 
-export const defaultRoute = '/admin/dashboard';
+export const defaultRoute = '/institute/dashboard';

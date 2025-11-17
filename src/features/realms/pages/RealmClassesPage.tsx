@@ -35,7 +35,7 @@ const RealmClassesPage: React.FC = () => {
   const pageItems = filtered.slice(pageStart, pageEnd)
 
   const handleViewClass = (classId: number) => {
-    navigate(`/admin/realms/${scope}/${realmSlug}/${classSlugFromId(classId)}`)
+    navigate(`/institute/realms/${scope}/${realmSlug}/${classSlugFromId(classId)}`)
   }
 
   const handleAddClass = () => {
@@ -93,7 +93,7 @@ const RealmClassesPage: React.FC = () => {
   return (
     <div className="w-full max-w-7xl mx-auto">
       <div className="flex items-center gap-4 mb-4">
-        <Button variant="secondary" onClick={() => navigate('/admin/realms')}>
+        <Button variant="secondary" onClick={() => navigate('/institute/realms')}>
           <ArrowLeft size={16} />
         </Button>
         <div>

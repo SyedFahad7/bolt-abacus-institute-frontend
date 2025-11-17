@@ -41,26 +41,48 @@ export const teachers = [
   { id: 't-6', name: 'Arjun Das', email: 'arjun.das@example.com' },
 ]
 
-export const students = Array.from({ length: 18 }).map((_, i) => {
-  const id = `s-${i+1}`
-  const name = ['Rahim Ali','Sara Malik','Aman','Fahad','Sofia','Liam','Emma','Noah','Olivia','Zara','Omar','Ibrahim','Hira','Naveed','Ayesha','Bilal','Kiran','Rida'][i % 18]
-  const email = `${name.toLowerCase().replace(/\s+/g,'')}@example.com`
-  const institute = institutes[i % institutes.length]
-  const batch = institute.batches[i % institute.batches.length]
-  return {
-    id,
-    name,
-    email,
-    location: ['Lahore','Karachi','Islamabad','Multan'][i % 4],
-    status: ['Active','Inactive'][i % 2],
-    performance: `${Math.floor(50 + Math.random()*50)}%`,
-    attendance: `${Math.floor(60 + Math.random()*40)}%`,
-    balance: `₹${(Math.floor(Math.random()*1000)).toFixed(0)}`,
-    instituteId: institute.id,
-    batchId: batch.id,
-    teacherId: teachers[i % teachers.length].id,
+// Generate students: 10 students per batch so institute-level frontends have enough data
+export const students: Array<{
+  id: string;
+  name: string;
+  email: string;
+  location: string;
+  status: string;
+  performance: string;
+  attendance: string;
+  balance: string;
+  instituteId: string;
+  batchId: string;
+  teacherId: string;
+}> = [];
+
+const sampleNames = ['Rahim Ali','Sara Malik','Aman','Fahad','Sofia','Liam','Emma','Noah','Olivia','Zara','Omar','Ibrahim','Hira','Naveed','Ayesha','Bilal','Kiran','Rida','Zain','Maya','Ishaan','Rania','Farah','Sana','Usman','Yasir','Areeba','Tariq','Salma','Rizwan'];
+
+let studentCounter = 1;
+for (const inst of institutes) {
+  for (const batch of inst.batches) {
+    for (let j = 0; j < 10; j++) {
+      const name = sampleNames[(studentCounter - 1) % sampleNames.length];
+      const id = `s-${studentCounter}`;
+      const email = `${name.toLowerCase().replace(/\s+/g,'')}@example.com`;
+      const teacherForBatch = teachers.find(t => t.id === batch.teacherId) || teachers[(studentCounter - 1) % teachers.length];
+      students.push({
+        id,
+        name,
+        email,
+        location: ['Lahore','Karachi','Islamabad','Multan'][studentCounter % 4],
+        status: ['Active','Inactive'][studentCounter % 2],
+        performance: `${Math.floor(50 + Math.random()*50)}%`,
+        attendance: `${Math.floor(60 + Math.random()*40)}%`,
+        balance: `₹${(Math.floor(Math.random()*1000)).toFixed(0)}`,
+        instituteId: inst.id,
+        batchId: batch.id,
+        teacherId: teacherForBatch.id,
+      });
+      studentCounter++;
+    }
   }
-})
+}
 
 export default { institutes, teachers, students }
 export function updateStudent(id: string, patch: Partial<{ name: string; email: string; instituteId: string; batchId: string }>) {

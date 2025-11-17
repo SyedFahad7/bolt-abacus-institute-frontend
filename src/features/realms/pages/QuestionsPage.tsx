@@ -94,7 +94,7 @@ const QuestionsPage: React.FC = () => {
   return (
     <div className="w-full max-w-7xl mx-auto">
       <div className="flex items-center gap-4 mb-4">
-        <Button variant="secondary" onClick={() => navigate(`/admin/realms/${scope}/${realmSlug}/${classSlug}`)}>
+  <Button variant="secondary" onClick={() => navigate(`/institute/realms/${scope}/${realmSlug}/${classSlug}`)}>
           <ArrowLeft size={16} />
         </Button>
         <div>

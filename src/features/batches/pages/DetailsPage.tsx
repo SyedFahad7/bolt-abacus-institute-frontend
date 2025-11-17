@@ -5,7 +5,9 @@ import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '.
 import { Button } from '../../../components'
 import { useParams, useNavigate } from 'react-router-dom'
 import { getBatch, getBatchStudents, getBatchInstitute } from '../utils'
-import { institutes, teachers, students, updateBatch, deleteBatch, moveBatchToInstitute, assignStudentToBatch, removeStudentFromBatch } from '../../../lib/data'
+import { institutes, teachers, students, updateBatch, deleteBatch, assignStudentToBatch, removeStudentFromBatch } from '../../../lib/data'
+// Use the first dummy institute as the current institute for this frontend
+const CURRENT_INSTITUTE_ID = institutes[0]?.id ?? ''
 
 const BatchDetailsPage: React.FC = () => {
   const { batchId } = useParams()
@@ -15,7 +17,6 @@ const BatchDetailsPage: React.FC = () => {
   const currentInstitute = useMemo(() => getBatchInstitute(batchId!), [batchId])
   
   const [selectedTeacher, setSelectedTeacher] = useState('')
-  const [selectedInstitute, setSelectedInstitute] = useState('')
   const [selectedStudent, setSelectedStudent] = useState('')
 
   if (!batch || !currentInstitute) return (
@@ -25,7 +26,8 @@ const BatchDetailsPage: React.FC = () => {
   )
 
   const assignedTeacher = teachers.find(t => t.id === batch.teacherId)
-  const availableStudents = students.filter(s => s.batchId !== batchId)
+  // Only allow adding students from the current institute who aren't in this batch
+  const availableStudents = students.filter(s => s.batchId !== batchId && s.instituteId === CURRENT_INSTITUTE_ID)
 
   const handleChangeTeacher = () => {
     if (!selectedTeacher) { alert('Select a teacher'); return }
@@ -34,17 +36,12 @@ const BatchDetailsPage: React.FC = () => {
     setSelectedTeacher('')
   }
 
-  const handleChangeInstitute = () => {
-    if (!selectedInstitute) { alert('Select an institute'); return }
-    moveBatchToInstitute(batchId!, currentInstitute.id, selectedInstitute)
-    alert('Batch moved to new institute (UI-only)')
-    setSelectedInstitute('')
-  }
+  // moving batches across institutes is not available in institute-scoped frontend
 
   const handleDelete = () => {
     if (!confirm('Delete this batch? Students will be unassigned.')) return
     deleteBatch(currentInstitute.id, batchId!)
-    navigate('/admin/batches')
+    navigate('/institute/batches')
   }
 
   const handleAddStudent = () => {
@@ -69,7 +66,7 @@ const BatchDetailsPage: React.FC = () => {
             <p className="text-sm text-white/70">{currentInstitute.name}</p>
           </div>
           <div>
-            <Button variant="secondary" onClick={() => navigate('/admin/batches')}>Back</Button>
+            <Button variant="secondary" onClick={() => navigate('/institute/batches')}>Back</Button>
           </div>
         </div>
 
@@ -94,22 +91,13 @@ const BatchDetailsPage: React.FC = () => {
             </CardContent>
           </Card>
 
+          {/* Institute move removed for institute-scoped frontend. Keep delete action. */}
           <Card className="bg-[#0f0f10] border-[#2a2a2d]">
             <CardHeader>
-              <CardTitle className="text-white">Institute</CardTitle>
+              <CardTitle className="text-white">Actions</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                <div className="text-white">
-                  Current: <span className="font-medium">{currentInstitute.name}</span>
-                </div>
-                <div className="flex gap-2 items-center">
-                  <select value={selectedInstitute} onChange={(e) => setSelectedInstitute(e.target.value)} className="bg-[#0b0b0c] border border-[#2a2a2d] rounded-md px-2 py-1 text-white flex-1">
-                    <option value="">Select institute</option>
-                    {institutes.filter(i => i.id !== currentInstitute.id).map(i => <option key={i.id} value={i.id}>{i.name}</option>)}
-                  </select>
-                  <Button onClick={handleChangeInstitute}>Move</Button>
-                </div>
                 <div>
                   <Button variant="destructive" onClick={handleDelete}>Delete Batch</Button>
                 </div>

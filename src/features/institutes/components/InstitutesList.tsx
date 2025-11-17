@@ -118,7 +118,7 @@ const InstitutesList: React.FC = () => {
                       ) : (
                         <div className="flex gap-2">
                           <Button variant="secondary" onClick={()=>{ setEditingId(i.id); setEditingName(i.name) }}><PencilSimple size={16} /></Button>
-                          <Button onClick={()=>navigate(`/admin/institutes/${i.id}`)}>View</Button>
+                          <Button onClick={()=>navigate('/institute/dashboard')}>View</Button>
                           <Button variant="destructive" onClick={()=>handleDelete(i.id)}><Trash size={16} /></Button>
                         </div>
                       )}

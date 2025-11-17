@@ -4,11 +4,11 @@ import QuestionsPage from './QuestionsPage'
 
 const Questions: React.FC = () => {
   return (
-    <AdminLayout>
+  <AdminLayout>
       <div className="w-full p-6">
         <QuestionsPage />
       </div>
-    </AdminLayout>
+  </AdminLayout>
   )
 }
 

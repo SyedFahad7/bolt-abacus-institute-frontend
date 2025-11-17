@@ -10,7 +10,9 @@ const StudentsPage: React.FC = () => {
 	const [query, setQuery] = useState('')
 	const [rowsPerPage, setRowsPerPage] = useState(10)
 	const [pageIndex, setPageIndex] = useState(0)
-	const [instituteFilter, setInstituteFilter] = useState('')
+	// This frontend is for a single institute. Default to the first dummy institute.
+	const CURRENT_INSTITUTE_ID = institutes[0]?.id ?? ''
+	const [instituteFilter, setInstituteFilter] = useState(CURRENT_INSTITUTE_ID)
 	const [batchFilter, setBatchFilter] = useState('')
 	const navigate = useNavigate()
 
@@ -21,6 +23,7 @@ const StudentsPage: React.FC = () => {
 				const matches = s.name.toLowerCase().includes(q) || s.email.toLowerCase().includes(q)
 				if (!matches) return false
 			}
+			// Only show students for the current institute
 			if (instituteFilter && s.instituteId !== instituteFilter) return false
 			if (batchFilter && s.batchId !== batchFilter) return false
 			return true
@@ -44,20 +47,16 @@ const StudentsPage: React.FC = () => {
 							setQuery(value)
 							setPageIndex(0)
 						}}
-					/>					<div className="flex gap-2 mt-2">
-						<div className="flex items-center gap-2">
-							<label className="text-white/80">Institute</label>
-							<select value={instituteFilter} onChange={(e)=>{ setInstituteFilter(e.target.value); setBatchFilter(''); setPageIndex(0) }} className="bg-[#0b0b0c] border border-[#2a2a2d] rounded-md px-2 py-1 text-white">
-								<option value="">All</option>
-								{institutes.map(i => <option key={i.id} value={i.id}>{i.name}</option>)}
-							</select>
-						</div>
-
+					/>
+					<div className="flex items-center gap-2 mt-2">
+						<button onClick={() => navigate('/institute/students/attendance')} className="px-4 py-2 bg-[#facb25] text-[#000] rounded-md font-medium">Mark Attendance</button>
+					</div>
+					<div className="flex gap-2 mt-2">
 						<div className="flex items-center gap-2">
 							<label className="text-white/80">Batch</label>
 							<select value={batchFilter} onChange={(e)=>{ setBatchFilter(e.target.value); setPageIndex(0) }} className="bg-[#0b0b0c] border border-[#2a2a2d] rounded-md px-2 py-1 text-white">
 								<option value="">All</option>
-								{institutes.find(x=>x.id===instituteFilter)?.batches.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
+								{institutes.find(x=>x.id===CURRENT_INSTITUTE_ID)?.batches.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
 							</select>
 						</div>
 					</div>
@@ -80,9 +79,8 @@ const StudentsPage: React.FC = () => {
 								<TableRow>
 									<TableHead>Name</TableHead>
 									<TableHead>Email</TableHead>
-									<TableHead>Institute</TableHead>
 									<TableHead>Batch</TableHead>
-									<TableHead>Attendance</TableHead>
+									<TableHead className="text-center">Attendance</TableHead>
 									<TableHead>Actions</TableHead>
 								</TableRow>
 							</TableHeader>
@@ -94,12 +92,11 @@ const StudentsPage: React.FC = () => {
 								<TableRow key={s.id}>
 									<TableCell className="font-medium">{s.name}</TableCell>
 									<TableCell>{s.email}</TableCell>
-									<TableCell>{inst?.name ?? '—'}</TableCell>
-									<TableCell>{batch?.name ?? '—'}</TableCell>
-									<TableCell>{s.attendance ?? '—'}</TableCell>
+										<TableCell>{batch?.name ?? '—'}</TableCell>
+									<TableCell className="text-center">{s.attendance ?? '—'}</TableCell>
 									<TableCell>
 										<button
-											onClick={() => navigate(`/admin/students/${s.id}/actions`)}
+											onClick={() => navigate(`/institute/students/${s.id}/actions`)}
 											className="px-3 py-1 bg-[#161618] rounded-md text-white"
 										>
 											Actions
@@ -111,7 +108,7 @@ const StudentsPage: React.FC = () => {
 
 						{filtered.length === 0 && (
 							<TableRow>
-								<TableCell colSpan={6} className="text-center py-8">No results.</TableCell>
+								<TableCell colSpan={5} className="text-center py-8">No results.</TableCell>
 							</TableRow>
 						)}
 						</TableBody>

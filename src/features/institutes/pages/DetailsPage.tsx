@@ -49,7 +49,7 @@ const InstituteDetailsPage: React.FC = () => {
             <p className="text-sm text-white/70">Institute details — batches, assigned teachers and students</p>
           </div>
           <div>
-            <Button variant="secondary" onClick={()=>navigate('/admin/institutes')}>Back</Button>
+            <Button variant="secondary" onClick={()=>navigate('/institute/dashboard')}>Back</Button>
           </div>
         </div>
 

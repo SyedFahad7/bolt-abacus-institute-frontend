@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../../components/ui/card';
+import { institutes, students } from '../../../lib/data';
 
 interface ActivityItem {
   id: string;
@@ -8,37 +9,32 @@ interface ActivityItem {
   type: 'info' | 'success' | 'warning' | 'error';
 }
 
+const CURRENT_INSTITUTE = institutes[0];
+
 const RecentActivity: React.FC = () => {
+  // Build some recent activities based on dummy data for the current institute
+  const instituteStudents = useMemo(() => students.filter(s => s.instituteId === (CURRENT_INSTITUTE?.id ?? '')), []);
+
+  const recentStudentActivities: ActivityItem[] = instituteStudents.slice(-3).reverse().map((s, idx) => ({
+    id: `stu-${s.id}`,
+    title: `New student enrolled — ${s.name}`,
+    time: `${5 * (idx + 1)} minutes ago`,
+    type: 'info'
+  }));
+
   const activities: ActivityItem[] = [
+    ...recentStudentActivities,
     {
-      id: '1',
-      title: 'New student registered',
-      time: '2 minutes ago',
-      type: 'info'
-    },
-    {
-      id: '2',
-      title: 'Batch completed',
-      time: '15 minutes ago',
+      id: 'b-1',
+      title: `${CURRENT_INSTITUTE?.batches[0]?.name ?? 'A batch'} started`,
+      time: '30 minutes ago',
       type: 'success'
     },
     {
-      id: '3',
-      title: 'New teacher added',
+      id: 't-1',
+      title: `New teacher assigned to ${CURRENT_INSTITUTE?.batches[0]?.name ?? 'a batch'}`,
       time: '1 hour ago',
       type: 'warning'
-    },
-    {
-      id: '4',
-      title: 'System maintenance completed',
-      time: '2 hours ago',
-      type: 'success'
-    },
-    {
-      id: '5',
-      title: 'Payment processed',
-      time: '3 hours ago',
-      type: 'info'
     }
   ];
 

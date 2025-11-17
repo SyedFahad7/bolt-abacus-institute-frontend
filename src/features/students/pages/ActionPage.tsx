@@ -11,7 +11,8 @@ const ActionPage: React.FC = () => {
   const student = useMemo(() => allStudents.find(s => s.id === studentId), [studentId])
   const [name, setName] = useState(student?.name ?? '')
   const [email, setEmail] = useState(student?.email ?? '')
-  const [instituteId, setInstituteId] = useState(student?.instituteId ?? '')
+  // This frontend is scoped to a single institute. Use the first dummy institute as current.
+  const CURRENT_INSTITUTE_ID = institutes[0]?.id ?? ''
   const [batchId, setBatchId] = useState(student?.batchId ?? '')
 
   if (!student) return (
@@ -22,7 +23,7 @@ const ActionPage: React.FC = () => {
     </AdminLayout>
   )
 
-  const inst = institutes.find(i => i.id === instituteId)
+  // current institute batches will be used directly via CURRENT_INSTITUTE_ID
 
   const handleSave = () => {
     const ok = updateStudent(student.id, { name, email })
@@ -34,20 +35,19 @@ const ActionPage: React.FC = () => {
   }
 
   const handleAssign = () => {
-    const ok = assignStudentToBatch(student.id, instituteId, batchId)
+    const ok = assignStudentToBatch(student.id, CURRENT_INSTITUTE_ID, batchId)
     if (ok) {
-      alert('Assigned to institute/batch successfully')
+      alert('Assigned to batch successfully')
     } else {
       alert('Failed to assign')
     }
   }
 
   const handleRemove = () => {
-    const ok = removeStudentFromBatch(student.id)
+    const ok = updateStudent(student.id, { batchId: '' })
     if (ok) {
-      setInstituteId('')
       setBatchId('')
-      alert('Removed from institute/batch successfully')
+      alert('Removed from batch successfully')
     } else {
       alert('Failed to remove')
     }
@@ -62,7 +62,7 @@ const ActionPage: React.FC = () => {
             <p className="text-sm text-white/70">Manage student assignments, teacher and other actions</p>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="secondary" onClick={() => navigate('/admin/students')}>Back</Button>
+            <Button variant="secondary" onClick={() => navigate('/institute/students')}>Back</Button>
           </div>
         </div>
 
@@ -84,20 +84,14 @@ const ActionPage: React.FC = () => {
 
           <Card className="bg-[#0f0f10] border-[#2a2a2d]">
             <CardHeader>
-              <CardTitle className="text-white">Institute / Batch Assignment</CardTitle>
+              <CardTitle className="text-white">Batch Assignment</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                <label className="text-white/70">Institute</label>
-                <select value={instituteId} onChange={(e)=>{ setInstituteId(e.target.value); setBatchId('') }} className="w-full bg-[#0b0b0c] border border-[#2a2a2d] rounded-md px-3 py-2 text-white">
-                  <option value="">-- none --</option>
-                  {institutes.map(i => <option key={i.id} value={i.id}>{i.name}</option>)}
-                </select>
-
                 <label className="text-white/70">Batch</label>
                 <select value={batchId} onChange={(e)=>setBatchId(e.target.value)} className="w-full bg-[#0b0b0c] border border-[#2a2a2d] rounded-md px-3 py-2 text-white">
                   <option value="">-- none --</option>
-                  {inst?.batches.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
+                  {institutes.find(i => i.id === CURRENT_INSTITUTE_ID)?.batches.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
                 </select>
 
                 <div className="flex gap-2 justify-end">

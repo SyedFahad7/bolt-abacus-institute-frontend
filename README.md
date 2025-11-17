@@ -1,4 +1,4 @@
-# ⚡️ Bolt Abacus Admin Frontend
+# ⚡️ Bolt Abacus Institute Frontend
 
 **Version:** 1.0.0  
 **Maintainer:** [Mohd Mujahed](mailto:dev.xunoia@gmail.com)  

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '../../../components/ui/card';
 import { Plus, BookOpen, ChartLine } from 'phosphor-react';
 
@@ -11,27 +12,28 @@ interface QuickAction {
 }
 
 const QuickActions: React.FC = () => {
+  const navigate = useNavigate()
   const actions: QuickAction[] = [
     {
       id: '1',
       title: 'Add New Student',
       description: 'Register a new student',
       icon: <Plus size={20} />,
-      onClick: () => console.log('Add new student')
+      onClick: () => navigate('/institute/students')
     },
     {
       id: '2',
       title: 'Create Batch',
       description: 'Start a new batch',
       icon: <BookOpen size={20} />,
-      onClick: () => console.log('Create batch')
+      onClick: () => navigate('/institute/batches')
     },
     {
       id: '3',
       title: 'View Reports',
       description: 'Generate analytics',
       icon: <ChartLine size={20} />,
-      onClick: () => console.log('View reports')
+      onClick: () => navigate('/institute/students/attendance')
     }
   ];
 

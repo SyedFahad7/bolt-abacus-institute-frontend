@@ -10,7 +10,9 @@ import { institutes, createRealm, updateRealmName, deleteRealm } from '../../../
 import { getRealmsForScope, slugify } from '../utils'
 
 const RealmsPage: React.FC = () => {
-  const [selectedScope, setSelectedScope] = useState('')
+  // Use the first institute as the current institute for this institute-scoped frontend
+  const CURRENT_INSTITUTE_NAME = institutes[0]?.name || ''
+  const selectedScope = CURRENT_INSTITUTE_NAME
   const [query, setQuery] = useState('')
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [pageIndex, setPageIndex] = useState(0)
@@ -20,14 +22,6 @@ const RealmsPage: React.FC = () => {
   const [editingName, setEditingName] = useState('')
   const [version, setVersion] = useState(0)
   const navigate = useNavigate()
-
-  const scopeOptions = useMemo(() => {
-    const options = [{ value: '', label: 'Select scope…' }, { value: 'global', label: 'Global Realms' }]
-    institutes.slice(0, 3).forEach(inst => {
-      options.push({ value: inst.name, label: inst.name })
-    })
-    return options
-  }, [])
 
   const realms = useMemo(() => getRealmsForScope(selectedScope), [selectedScope, version])
 
@@ -46,7 +40,7 @@ const RealmsPage: React.FC = () => {
   const handleViewRealm = (realmName: string) => {
     const scopeSlug = slugify(selectedScope)
     const realmSlug = slugify(realmName)
-    navigate(`/admin/realms/${scopeSlug}/${realmSlug}`)
+    navigate(`/institute/realms/${scopeSlug}/${realmSlug}`)
   }
 
   const handleCreate = () => {
@@ -76,59 +70,42 @@ const RealmsPage: React.FC = () => {
       <div className="flex items-center justify-between gap-4 mb-4">
         <div>
           <h2 className="text-2xl font-bold text-white">Realms Management</h2>
-          <p className="text-sm text-white/70">Manage curriculum across realms and institutes</p>
+          <p className="text-sm text-white/70">Manage curriculum across realms of the institute</p>
         </div>
       </div>
 
       <Card className="bg-[#0f0f10] border-[#2a2a2d] w-full">
         <CardHeader>
-          <CardTitle className="text-white">Select Scope</CardTitle>
+          <CardTitle className="text-white">Realms</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="mb-4">
-            <label className="text-white/80 text-sm mb-2 block">Realm Scope</label>
-            <select 
-              value={selectedScope} 
-              onChange={(e) => {
-                setSelectedScope(e.target.value)
-                setPageIndex(0)
-                setQuery('')
-              }} 
-              className="w-full md:w-64 bg-[#0b0b0c] border border-[#2a2a2d] rounded-md px-3 py-2 text-white"
-            >
-              {scopeOptions.map(opt => (
-                <option key={opt.value} value={opt.value}>{opt.label}</option>
-              ))}
-            </select>
+          {/* Realms are scoped to the current institute in this frontend */}
+          <div className="mb-3">
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex-1">
+                <SearchInput
+                  placeholder="Search realms by name..."
+                  value={query}
+                  onChange={(value) => {
+                    setQuery(value)
+                    setPageIndex(0)
+                  }}
+                />
+              </div>
+              <Button onClick={() => setShowAdd(s => !s)} className="whitespace-nowrap">
+                <Plus size={16} className="mr-1" /> Add realm
+              </Button>
+            </div>
+            {showAdd && (
+              <div className="mt-3 flex items-center gap-2">
+                <Input placeholder="Realm name" value={newName} onChange={(e:any)=>setNewName(e.target.value)} />
+                <Button onClick={handleCreate}>Create</Button>
+                <Button variant="secondary" onClick={()=>{setShowAdd(false); setNewName('')}}>Cancel</Button>
+              </div>
+            )}
           </div>
 
-          {selectedScope && (
-            <>
-              <div className="mb-3">
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex-1">
-                    <SearchInput
-                      placeholder="Search realms by name..."
-                      value={query}
-                      onChange={(value) => {
-                        setQuery(value)
-                        setPageIndex(0)
-                      }}
-                    />
-                  </div>
-                  <Button onClick={() => setShowAdd(s => !s)} className="whitespace-nowrap">
-                    <Plus size={16} className="mr-1" /> Add realm
-                  </Button>
-                </div>
-                {showAdd && (
-                  <div className="mt-3 flex items-center gap-2">
-                    <Input placeholder="Realm name" value={newName} onChange={(e:any)=>setNewName(e.target.value)} />
-                    <Button onClick={handleCreate}>Create</Button>
-                    <Button variant="secondary" onClick={()=>{setShowAdd(false); setNewName('')}}>Cancel</Button>
-                  </div>
-                )}
-              </div>
-
+          <>
               <Table>
                 <TableHeader className="text-center">
                   <TableRow>
@@ -189,8 +166,7 @@ const RealmsPage: React.FC = () => {
                   setPageIndex(0)
                 }}
               />
-            </>
-          )}
+          </>
         </CardContent>
       </Card>
     </div>

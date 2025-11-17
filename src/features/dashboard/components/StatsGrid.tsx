@@ -1,36 +1,60 @@
-import React from 'react';
-import { ChartBar, Users, Buildings, Books } from 'phosphor-react';
+import React, { useMemo } from 'react';
+import { Users, Books, ChalkboardTeacher, Gauge } from 'phosphor-react';
 import StatsCard from './StatsCard';
+import { institutes, students, teachers } from '../../../lib/data';
+
+// For the institute frontend we show stats for a single institute.
+// TODO: replace this with real institute id from auth/context. For now use first institute as the current one.
+const CURRENT_INSTITUTE_ID = institutes[0]?.id ?? '';
 
 const StatsGrid: React.FC = () => {
+  const currentInstitute = institutes.find(i => i.id === CURRENT_INSTITUTE_ID);
+
+  const instituteStudents = useMemo(() => students.filter(s => s.instituteId === CURRENT_INSTITUTE_ID), []);
+
+  const instituteBatchesCount = currentInstitute ? currentInstitute.batches.length : 0;
+
+  const instituteTeachersCount = useMemo(() => {
+    if (!currentInstitute) return 0;
+    const teacherIds = new Set(currentInstitute.batches.map(b => b.teacherId).filter(Boolean));
+    return Array.from(teacherIds).filter(Boolean).length;
+  }, [currentInstitute]);
+
+  const avgAttendance = useMemo(() => {
+    if (instituteStudents.length === 0) return '—';
+    const vals = instituteStudents.map(s => parseInt((s.attendance || '0%').replace('%','')) || 0);
+    const avg = Math.round(vals.reduce((a,b) => a+b, 0) / vals.length);
+    return `${avg}%`;
+  }, [instituteStudents]);
+
   const stats = [
     {
-      title: 'Total Students',
-      value: '1,234',
+      title: 'Students',
+      value: instituteStudents.length.toString(),
       icon: <Users size={24} />,
-      change: '+12%',
-      changeType: 'positive' as const
+      change: '+0%',
+      changeType: 'neutral' as const
     },
     {
-      title: 'Active Institutes',
-      value: '45',
-      icon: <Buildings size={24} />,
-      change: '+3%',
-      changeType: 'positive' as const
+      title: 'Batches',
+      value: instituteBatchesCount.toString(),
+      icon: <Books size={24} />,
+      change: '+0%',
+      changeType: 'neutral' as const
     },
     {
       title: 'Teachers',
-      value: '89',
-      icon: <ChartBar size={24} />,
-      change: '+5%',
-      changeType: 'positive' as const
+      value: instituteTeachersCount.toString(),
+      icon: <ChalkboardTeacher size={24} />,
+      change: '+0%',
+      changeType: 'neutral' as const
     },
     {
-      title: 'Active Batches',
-      value: '156',
-      icon: <Books size={24} />,
-      change: '+8%',
-      changeType: 'positive' as const
+      title: 'Avg Attendance',
+      value: avgAttendance,
+      icon: <Gauge size={24} />,
+      change: '+0%',
+      changeType: 'neutral' as const
     }
   ];
 

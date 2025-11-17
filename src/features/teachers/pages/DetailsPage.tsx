@@ -10,7 +10,8 @@ const TeacherDetailsPage: React.FC = () => {
   const { teacherId } = useParams()
   const navigate = useNavigate()
   const teacher = useMemo(() => teachers.find(t => t.id === teacherId), [teacherId])
-  const [selectedInstitute, setSelectedInstitute] = useState('')
+  // This frontend is scoped to a single institute. Use the first dummy institute as current.
+  const CURRENT_INSTITUTE_ID = institutes[0]?.id ?? ''
   const [selectedBatch, setSelectedBatch] = useState('')
 
   if (!teacher) return (
@@ -19,16 +20,17 @@ const TeacherDetailsPage: React.FC = () => {
     </AdminLayout>
   )
 
-  const assignedInst = institutes.find(i => i.batches.some(b => b.teacherId === teacher.id))
+  const assignedInst = institutes.find(i => i.id === CURRENT_INSTITUTE_ID && i.batches.some(b => b.teacherId === teacher.id))
   const assignedBatch = assignedInst?.batches.find(b => b.teacherId === teacher.id)
 
-  const teacherStudents = students.filter(s => s.teacherId === teacher.id)
+  // Show students of the assigned batch (within current institute) only
+  const teacherStudents = assignedBatch ? students.filter(s => s.batchId === assignedBatch.id && s.instituteId === CURRENT_INSTITUTE_ID) : []
 
   const handleAssign = () => {
-    if (!selectedInstitute || !selectedBatch) { alert('Select institute and batch') ; return }
-    assignTeacherToInstituteBatch(teacher.id, selectedInstitute, selectedBatch)
+    if (!selectedBatch) { alert('Select batch') ; return }
+    assignTeacherToInstituteBatch(teacher.id, CURRENT_INSTITUTE_ID, selectedBatch)
     alert('Assigned (UI-only)')
-    setSelectedInstitute(''); setSelectedBatch('')
+    setSelectedBatch('')
   }
 
   const handleRemove = () => {
@@ -45,7 +47,7 @@ const TeacherDetailsPage: React.FC = () => {
   const handleDelete = () => {
     if (!confirm('Delete teacher account?')) return
     deleteTeacher(teacher.id)
-    navigate('/admin/teachers')
+    navigate('/institute/teachers')
   }
 
   return (
@@ -57,7 +59,7 @@ const TeacherDetailsPage: React.FC = () => {
             <p className="text-sm text-white/70">Teacher actions and assignments</p>
           </div>
           <div>
-            <Button variant="secondary" onClick={()=>navigate('/admin/teachers')}>Back</Button>
+            <Button variant="secondary" onClick={()=>navigate('/institute/teachers')}>Back</Button>
           </div>
         </div>
 
@@ -69,14 +71,9 @@ const TeacherDetailsPage: React.FC = () => {
             <CardContent>
               <div className="space-y-3">
                 <div className="flex gap-2 items-center">
-                  <select value={selectedInstitute} onChange={(e)=>{ setSelectedInstitute(e.target.value); setSelectedBatch('') }} className="bg-[#0b0b0c] border border-[#2a2a2d] rounded-md px-2 py-1 text-white">
-                    <option value="">Select institute</option>
-                    {institutes.map(i=> <option key={i.id} value={i.id}>{i.name}</option>)}
-                  </select>
-
                   <select value={selectedBatch} onChange={(e)=>setSelectedBatch(e.target.value)} className="bg-[#0b0b0c] border border-[#2a2a2d] rounded-md px-2 py-1 text-white">
                     <option value="">Select batch</option>
-                    {institutes.find(x=>x.id===selectedInstitute)?.batches.map(b=> <option key={b.id} value={b.id}>{b.name}</option>)}
+                    {institutes.find(x=>x.id===CURRENT_INSTITUTE_ID)?.batches.map(b=> <option key={b.id} value={b.id}>{b.name}</option>)}
                   </select>
                 </div>
 

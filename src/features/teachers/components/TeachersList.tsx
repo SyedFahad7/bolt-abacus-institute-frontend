@@ -124,7 +124,6 @@ const TeachersList: React.FC = () => {
               <TableRow>
                 <TableHead>Name</TableHead>
                 <TableHead>Email</TableHead>
-                <TableHead>Institute</TableHead>
                 <TableHead>Batch</TableHead>
                 <TableHead>Actions</TableHead>
               </TableRow>
@@ -142,7 +141,6 @@ const TeachersList: React.FC = () => {
                   <TableCell>{editingId === t.id ? (
                     <Input value={editingEmail} onChange={(e:any)=>setEditingEmail(e.target.value)} />
                   ) : t.email}</TableCell>
-                  <TableCell>{inst?.name ?? '—'}</TableCell>
                   <TableCell>{batch?.name ?? '—'}</TableCell>
                   <TableCell>
                     {editingId === t.id ? (
@@ -153,7 +151,7 @@ const TeachersList: React.FC = () => {
                     ) : (
                       <div className="flex gap-2">
                         <Button variant="secondary" onClick={()=>{ setEditingId(t.id); setEditingName(t.name); setEditingEmail(t.email) }}><PencilSimple size={16} /></Button>
-                        <Button onClick={()=>navigate(`/admin/teachers/${t.id}`)}>Actions</Button>
+                        <Button onClick={()=>navigate(`/institute/teachers/${t.id}`)}>Actions</Button>
                         <Button variant="destructive" onClick={()=>handleDelete(t.id)}><Trash size={16} /></Button>
                       </div>
                     )}
