@@ -11,8 +11,8 @@ const StudentsPage: React.FC = () => {
 	const [rowsPerPage, setRowsPerPage] = useState(10)
 	const [pageIndex, setPageIndex] = useState(0)
 	// This frontend is for a single institute. Default to the first dummy institute.
-	const CURRENT_INSTITUTE_ID = institutes[0]?.id ?? ''
-	const [instituteFilter, setInstituteFilter] = useState(CURRENT_INSTITUTE_ID)
+ 	const CURRENT_INSTITUTE_ID = institutes[0]?.id ?? ''
+ 	const [instituteFilter] = useState(CURRENT_INSTITUTE_ID)
 	const [batchFilter, setBatchFilter] = useState('')
 	const navigate = useNavigate()
 

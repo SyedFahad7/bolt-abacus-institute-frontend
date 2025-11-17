@@ -61,7 +61,7 @@ const PopupDatePicker: React.FC<Props> = ({ value, onChange, placeholder, classN
     setOpen(false)
   }
 
-  const today = new Date()
+  
 
   return (
     <div className={className} ref={ref}>

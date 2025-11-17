@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { institutes, students as allStudents, updateStudent, assignStudentToBatch, removeStudentFromBatch } from '../../../lib/data'
+import { institutes, students as allStudents, updateStudent, assignStudentToBatch } from '../../../lib/data'
 import AdminLayout from '../../../components/AdminLayout'
 import { Card, CardHeader, CardTitle, CardContent } from '../../../components/Card'
 import { Input, Button } from '../../../components'

@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Users, Books, ChalkboardTeacher, Gauge } from 'phosphor-react';
 import StatsCard from './StatsCard';
-import { institutes, students, teachers } from '../../../lib/data';
+import { institutes, students } from '../../../lib/data';
 
 // For the institute frontend we show stats for a single institute.
 // TODO: replace this with real institute id from auth/context. For now use first institute as the current one.
